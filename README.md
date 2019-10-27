@@ -18,27 +18,22 @@ For server deployment, just run
 ```
 docker-compose up
 ```
+The command above will setup two image, one for our usersystem app, and another is mysql db.
 
 Server setup
 ------
 
 Android setup
 ------
-In order to make `SerializeToByte` in C++ and `parseFrom(byte array)` in Java works, the protobuf format type
+In order to make `SerializeToByte` in C++ and `parseFrom(byte array)` in Java works, the protobuf format type should keep the same, both should use `protobuf` or `protobuf-lite`. For android, add protoc command option `--java_out=lite:${OUTPUT_DIR}` and `optimize_for = LITE_RUNTIME` declaration option to make both C++ and Java use the lite version.
 
-should keep the same, both should use `protobuf` or `protobuf-lite`. For android, add protoc command option 
-
-`--java_out=lite:${OUTPUT_DIR}` and `optimize_for = LITE_RUNTIME` declaration option to make both C++ and Java 
-use the lite version.
-
-Build `grpc++` for android `arm64-v8a`, and use the following command to copy all static archives
-to android studio project.
+Build `grpc++` for android `arm64-v8a` from cmake, and use the following command to copy all static archives to android studio project.
 
 ```bash
 $ find . -name "*.a" -exec cp {} /path/to/android/project/usersystem/libs/arm64-v8a/ \;
 ```
 
-The order of prebuilt static library when adding to android project, `libgpr`/`libssl`/`libcrypto` should place
+The order of prebuilt static library when adding to android project matters, `libgpr`/`libssl`/`libcrypto` should place
 after `libgrpc++` and `libgrpc`, otherwise the linker will report strange symbols undefined error.
 
 Build android project, and use the following command to generate necessary JNI binding
