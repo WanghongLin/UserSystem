@@ -1,0 +1,120 @@
+// the base protobuf data for a simple user login system
+
+syntax = "proto2";
+option java_multiple_files = true;
+option java_package = "com.wanghong.grpc.usersystem.proto";
+option java_outer_classname = "UserSystemProto";
+option optimize_for = LITE_RUNTIME;
+package usersystem;
+
+service UserSystem {
+    rpc Register(RegisterRequest) returns (RegisterResponse) {}
+    rpc Login(LoginRequest) returns (LoginResponse) {}
+    rpc CheckLogin(CheckLoginRequest) returns (stream CheckLoginResponse) {}
+    rpc Logout(LogoutRequest) returns (CommonResponse) {}
+}
+
+enum ResponseCode {
+    OK = 0;
+    ERROR_REGISTER_USERNAME_HAS_BEEN_TAKEN = 1;
+    ERROR_REGISTER_EMPTY_USERNAME_PASSWORD = 2;
+    ERROR_LOGIN_WRONG_USERNAME = 3; // no such user, register required
+    ERROR_LOGIN_WRONG_PASSWORD = 4; // no password, try again
+    ERROR_LOGIN_STATUS_INVALID = 5;
+    ERROR_ANDROID_JNI_CALL = 6;
+    ERROR_GRPC_ERROR = 7;
+    ERROR_INVALID_USERNAME = 8;
+    ERROR_UNKNOWN = 9;
+}
+
+enum Platform {
+    Type_Desktop = 0;
+    Type_Android = 1; // do not use ANDROID conflict with android build system
+    Type_iOS = 2;
+}
+
+message Geo {
+    required double lat = 1;
+    required double lng = 2;
+}
+
+message UserModel {
+    required string id = 1;
+    required string username = 2;
+    optional string password = 3;
+    optional int32 age = 4;
+
+    enum UserGender {
+        MALE = 0;
+        FEMALE = 1;
+        NEUTER = 2;
+    }
+    optional UserGender gender = 5;
+    optional string phone_number = 6;
+    optional Geo geo = 7;
+    optional uint64 create_at_millis = 8;
+    optional uint64 update_at_millis = 9;
+}
+
+message UserLoginHistoryModel {
+    required string id = 1;
+    required string username = 2;
+    required string token = 3;
+    required string device_id = 4;
+    required Platform from_platform = 5;
+    required bool is_valid = 6;
+    optional uint64 create_at_millis = 7;
+    optional uint64 update_at_millis = 8;
+    optional uint64 expire_at_millis = 9;
+}
+
+message CommonResponse {
+    required ResponseCode code = 1;
+    optional string message = 2;
+    optional int32 grpc_error_code = 3;
+    optional string grpc_error_message = 4;
+    optional string grpc_error_details = 5;
+}
+
+message RegisterRequest {
+    required string username = 1;
+    required string password = 2;
+    required string device_id = 3;
+    required Platform platform = 4;
+}
+
+message RegisterResponse {
+    required CommonResponse response = 1;
+    optional UserModel userModel = 2;
+    optional string token = 3;
+}
+
+message LoginRequest {
+    required string username = 1;
+    required string password = 2;
+    required string device_id = 3;
+    required Platform platform = 4;
+    optional Geo geo = 5;
+}
+
+message LoginResponse {
+    required CommonResponse response = 1;
+    optional UserModel userModel = 2;
+    optional string token = 3;
+}
+
+message CheckLoginRequest {
+    required string username = 1;
+    required string token = 2;
+    required string device_id = 3;
+    required Platform from_platform = 4;
+    optional Geo geo = 5;
+}
+
+message CheckLoginResponse {
+    required CommonResponse response = 1;
+}
+
+message LogoutRequest {
+    required string username = 1;
+}

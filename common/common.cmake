@@ -1,0 +1,30 @@
+
+include_directories(${CMAKE_SOURCE_DIR}/common)
+file(GLOB COMMON_FILES ${CMAKE_SOURCE_DIR}/common/*.cc)
+
+include(FindPkgConfig)
+if (PKG_CONFIG_FOUND)
+    pkg_check_modules(GRPC grpc++)
+    if (GRPC_FOUND)
+        include_directories(${GRPC_INCLUDE_DIRS})
+        link_directories(${GRPC_LIBRARY_DIRS})
+        link_libraries(${GRPC_LIBRARIES})
+    endif (GRPC_FOUND)
+
+    set(ENV{PKG_CONFIG_PATH} "$ENV{HOME}/Developments/github/grpc/third_party/protobuf/out/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
+    pkg_check_modules(PB protobuf)
+    if (PB_FOUND)
+        include_directories(${PB_INCLUDE_DIRS})
+        link_directories(${PB_LIBRARY_DIRS})
+        link_libraries(${PB_LIBRARIES})
+    endif (PB_FOUND)
+
+    set(ENV{PKG_CONFIG_PATH} "$ENV{HOME}/Developments/Homebrew/Cellar/openssl/1.0.2s/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
+    pkg_check_modules(SSL openssl)
+    if (SSL_FOUND)
+        include_directories(${SSL_INCLUDE_DIRS})
+        link_directories(${SSL_LIBRARY_DIRS})
+        link_libraries(${SSL_LIBRARIES})
+    endif (SSL_FOUND)
+endif (PKG_CONFIG_FOUND)
+

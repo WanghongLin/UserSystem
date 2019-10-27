@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">client-android</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="register">Sign up</string>
+    <string name="go_to_login">Already have account? Click to login</string>
+    <string name="go_to_register">No account? click here to sign up</string>
+    <string name="login">Login</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="logout">Logout</string>
+    <string name="empty_username_password">Username or password can not be empty</string>
+    <string name="password_did_not_match">Password did not match</string>
+    <string name="ok">OK</string>
+    <string name="login_from_other_device">Your account has been login from other device</string>
+</resources>
