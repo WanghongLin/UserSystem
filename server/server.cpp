@@ -60,10 +60,12 @@ UZj0IsTK+lwzX+FkrN5Z5lQdvQ==
 -----END PRIVATE KEY-----
 )key";
 
-void RunServer(bool enableSsl)
+constexpr auto DEFAULT_DB_URL = "mysqlx://root:example@db";
+
+void RunServer(bool enableSsl, std::string& dbUrl)
 {
     std::string server_address("0.0.0.0:50051");
-    UserSystemImpl service;
+    UserSystemImpl service(dbUrl);
 
     grpc::SslServerCredentialsOptions::PemKeyCertPair pemKeyCertPair;
     pemKeyCertPair.private_key = std::string(KEY_PEM);
@@ -88,12 +90,17 @@ int main(int argc, char* argv[])
 {
     // ssl server didn't support connect from IP address
     bool sslSupport = false;
+    std::string dbUrl(DEFAULT_DB_URL);
     for (int i = 0; i < argc; i++) {
         if (std::string(argv[i]) == "--enable-ssl") {
             sslSupport = true;
         }
+
+        if (std::string(argv[i]) == "--db-url" && (i+1) < argc) {
+            dbUrl = std::string(argv[i+1]);
+        }
     }
 
-    RunServer(sslSupport);
+    RunServer(sslSupport, dbUrl);
     return EXIT_SUCCESS;
 }

@@ -35,7 +35,7 @@ usersystem::UserLoginHistoryModel CreateLoginHistoryModel(const REQUEST* request
 grpc::Status UserSystemImpl::Register(::grpc::ServerContext *context,
                                       const usersystem::RegisterRequest *request,
                                       usersystem::RegisterResponse *response) {
-    MySQLDbConnector _dbConnector;
+    MySQLDbConnector _dbConnector(_dbUrl);
     if (request->username().empty() || request->password().empty()) {
         response->mutable_response()->set_code(usersystem::ResponseCode::ERROR_REGISTER_EMPTY_USERNAME_PASSWORD);
         return grpc::Status::OK;
@@ -74,7 +74,7 @@ grpc::Status
 UserSystemImpl::Login(::grpc::ServerContext *context, const usersystem::LoginRequest *request,
                       usersystem::LoginResponse *response) {
 
-    MySQLDbConnector _dbConnector;
+    MySQLDbConnector _dbConnector(_dbUrl);
     if (request->username().empty()) {
         response->mutable_response()->set_code(usersystem::ResponseCode::ERROR_LOGIN_WRONG_USERNAME);
         return grpc::Status::OK;
@@ -132,7 +132,7 @@ UserSystemImpl::Login(::grpc::ServerContext *context, const usersystem::LoginReq
 
 grpc::Status UserSystemImpl::CheckLogin(::grpc::ServerContext *context, const ::usersystem::CheckLoginRequest *request,
                                         ::grpc::ServerWriter<::usersystem::CheckLoginResponse> *writer) {
-    MySQLDbConnector _dbConnector;
+    MySQLDbConnector _dbConnector(_dbUrl);
     std::cout << __PRETTY_FUNCTION__ << " from " << context->peer() << ' '
               << request->username() << '\n'
               << request->token() << '\n'
@@ -177,7 +177,7 @@ grpc::Status UserSystemImpl::Logout(::grpc::ServerContext *context, const ::user
         return grpc::Status::OK;
     }
 
-    MySQLDbConnector dbConnector;
+    MySQLDbConnector dbConnector(_dbUrl);
     auto result = dbConnector.FetchLoginHistory(request->username());
     if (result.username() == request->username()) {
         result.set_is_valid(false);

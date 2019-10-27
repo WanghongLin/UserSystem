@@ -17,7 +17,7 @@
 class UserSystemImpl : public usersystem::UserSystem::Service {
 
 public:
-    explicit UserSystemImpl() /* : _dbConnector(new MySQLDbConnector)*/ {}
+    explicit UserSystemImpl(const std::string& dbUrl) : _dbUrl(dbUrl) /* : _dbConnector(new MySQLDbConnector)*/ {}
 
     grpc::Status
     Register(::grpc::ServerContext *context, const usersystem::RegisterRequest *request, usersystem::RegisterResponse *response) override;
@@ -40,6 +40,7 @@ public:
 private:
     // FIXME: can not shared across multiple threads
     // AbstractDbConnector* _dbConnector;
+    std::string _dbUrl;
     std::mutex _checkLoginMutex;
     std::condition_variable _checkLoginCV;
 };
