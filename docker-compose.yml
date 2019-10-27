@@ -1,0 +1,20 @@
+version: "3"
+services:
+    grpc:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "50051:50051"
+        tty: true
+
+
+    db:
+        image: mysql:8.0
+        command: --default-authentication-plugin=mysql_native_password 
+        restart: always 
+        environment: 
+            MYSQL_ROOT_PASSWORD: example
+        ports:
+            - "33306:3306"
+
