@@ -23,7 +23,7 @@ RUN apt-get update --fix-missing && apt-get install -y \
   && apt-get clean
 
 # install protobuf first, then grpc
-ENV GRPC_RELEASE_TAG v1.21.x
+ENV GRPC_RELEASE_TAG v1.23.x
 RUN git clone -b ${GRPC_RELEASE_TAG} https://github.com/grpc/grpc /var/local/git/grpc && \
     cd /var/local/git/grpc && \
     git submodule update --init && \
@@ -42,8 +42,8 @@ RUN git clone https://github.com/mysql/mysql-connector-cpp.git /var/local/git/my
     mkdir build && \
     cd build && \
     cmake -DCMAKE_BUILD_TYPE=Release .. && \
-    cmake --build . && \
-    cmake --build . --target install && \
+    cmake --build . -- -j$(nproc) && \
+    cmake --build . --target install -- -j$(nproc) && \
     ldconfig /usr/local/mysql/connector-c++-8.0/lib64 && \
     rm -rf /var/local/git/mysql-connector-cpp
 
@@ -51,3 +51,12 @@ RUN echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8
     tee /etc/apt/sources.list.d/bazel.list && curl https://bazel.build/bazel-release.pub.gpg | apt-key add - && \
     apt-get update && apt-get install -y bazel && \
     apt-get clean
+
+RUN git clone https://github.com/WanghongLin/UserSystem /var/local/git/UserSystem && \
+    cd /var/local/git/UserSystem && \
+    mkdir build && \
+    cd build && \
+    cmake -DMYSQL_CONNECTOR=/usr/local/mysql/connector-c++-8.0 .. && \
+    make server -j$(nproc)
+
+CMD ["/var/local/git/UserSystem/build/server/server"]
