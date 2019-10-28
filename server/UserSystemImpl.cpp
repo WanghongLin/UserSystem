@@ -62,6 +62,7 @@ grpc::Status UserSystemImpl::Register(::grpc::ServerContext *context,
     // also perform login for new create user
     // the client no need to request again just for login
     auto loginHistoryModel = CreateLoginHistoryModel(request);
+    _dbConnector.CreateLoginHistory(loginHistoryModel);
 
     response->mutable_response()->set_code(usersystem::ResponseCode::OK);
     response->mutable_usermodel()->set_username(result.username());
