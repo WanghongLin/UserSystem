@@ -82,6 +82,7 @@ void RunServer(bool enableSsl, std::string& dbUrl)
 
     std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
     std::cout << "Server listening on " << server_address << std::endl;
+    std::cout << "Use db url " << dbUrl << std::endl;
 
     server->Wait();
 }

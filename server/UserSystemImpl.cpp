@@ -35,6 +35,7 @@ usersystem::UserLoginHistoryModel CreateLoginHistoryModel(const REQUEST* request
 grpc::Status UserSystemImpl::Register(::grpc::ServerContext *context,
                                       const usersystem::RegisterRequest *request,
                                       usersystem::RegisterResponse *response) {
+    std::cout << __FUNCTION__ << " from " << context->peer() << ' ' << request->username() << ' ' << request->device_id() << std::endl;
     MySQLDbConnector _dbConnector(_dbUrl);
     if (request->username().empty() || request->password().empty()) {
         response->mutable_response()->set_code(usersystem::ResponseCode::ERROR_REGISTER_EMPTY_USERNAME_PASSWORD);
@@ -75,6 +76,7 @@ UserSystemImpl::Login(::grpc::ServerContext *context, const usersystem::LoginReq
                       usersystem::LoginResponse *response) {
 
     MySQLDbConnector _dbConnector(_dbUrl);
+    std::cout << __FUNCTION__ << " from " << context->peer() << ' ' << request->username() << std::endl;
     if (request->username().empty()) {
         response->mutable_response()->set_code(usersystem::ResponseCode::ERROR_LOGIN_WRONG_USERNAME);
         return grpc::Status::OK;
@@ -83,12 +85,14 @@ UserSystemImpl::Login(::grpc::ServerContext *context, const usersystem::LoginReq
     auto user = _dbConnector.FetchUser(request->username());
     if (user.id().empty()) {
         response->mutable_response()->set_code(usersystem::ResponseCode::ERROR_LOGIN_WRONG_USERNAME);
+        response->mutable_response()->set_message("User not exists");
         return grpc::Status::OK;
     }
 
     auto password = Utils::SHA256(request->password());
     if (password != user.password()) {
         response->mutable_response()->set_code(usersystem::ResponseCode::ERROR_LOGIN_WRONG_PASSWORD);
+        response->mutable_response()->set_message("Username and password not match");
         return grpc::Status::OK;
     }
 
@@ -133,12 +137,7 @@ UserSystemImpl::Login(::grpc::ServerContext *context, const usersystem::LoginReq
 grpc::Status UserSystemImpl::CheckLogin(::grpc::ServerContext *context, const ::usersystem::CheckLoginRequest *request,
                                         ::grpc::ServerWriter<::usersystem::CheckLoginResponse> *writer) {
     MySQLDbConnector _dbConnector(_dbUrl);
-    std::cout << __PRETTY_FUNCTION__ << " from " << context->peer() << ' '
-              << request->username() << '\n'
-              << request->token() << '\n'
-              << request->device_id() << '\n'
-              << "tid " << std::this_thread::get_id() << '\n'
-              << "DB instance " << &_dbConnector << std::endl;
+    std::cout << __FUNCTION__ << " from " << context->peer() << ' ' << request->username() << ' ' << request->device_id() << std::endl;
 
     if (request->username().empty() || request->device_id().empty() || request->token().empty()) {
         usersystem::CheckLoginResponse response;
@@ -150,7 +149,6 @@ grpc::Status UserSystemImpl::CheckLogin(::grpc::ServerContext *context, const ::
     do {
         // check last login history match
         auto lastRecord = _dbConnector.FetchLoginHistory(request->username());
-        std::cout << "Last login record id " << lastRecord.id() << std::endl;
         if (lastRecord.username() == request->username() &&
             lastRecord.token() == request->token() &&
             lastRecord.device_id() == request->device_id() &&
@@ -172,6 +170,7 @@ grpc::Status UserSystemImpl::CheckLogin(::grpc::ServerContext *context, const ::
 
 grpc::Status UserSystemImpl::Logout(::grpc::ServerContext *context, const ::usersystem::LogoutRequest *request,
                                     ::usersystem::CommonResponse *response) {
+    std::cout << __FUNCTION__ << " from " << context->peer() << ' ' << request->username() << std::endl;
     if (request->username().empty()) {
         response->set_code(usersystem::ERROR_INVALID_USERNAME);
         return grpc::Status::OK;
@@ -188,7 +187,7 @@ grpc::Status UserSystemImpl::Logout(::grpc::ServerContext *context, const ::user
         lck.unlock();
 
         response->set_code(usersystem::OK);
-        response->set_message("logout ok");
+        response->set_message("Logout ok");
         return grpc::Status::OK;
     } else {
         response->set_code(usersystem::ERROR_INVALID_USERNAME);
