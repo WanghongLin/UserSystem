@@ -19,6 +19,7 @@ package com.wanghong.grpc
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import com.wanghong.grpc.usersystem.UserSystemCallback
 import com.wanghong.grpc.usersystem.proto.LoginResponse
@@ -47,6 +48,8 @@ class LoginActivity : BaseActivity() {
     private val userSystemCallback = object : UserSystemCallback {
         override fun onLogin(loginResponse: LoginResponse) {
             super.onLogin(loginResponse)
+            hideProgressBar()
+
             if (loginResponse.response.code == ResponseCode.OK &&
                     loginResponse.token.isNotEmpty()) {
                 application.saveUserAuthInfo(loginResponse.userModel.username,
@@ -59,6 +62,8 @@ class LoginActivity : BaseActivity() {
         }
     }
 
+    override fun getProgressBar(): View? = loginProgressBar
+
     private fun performLogin() {
         val username = loginEditTextUsername.text.toString()
         val password = loginEditTextPassword.text.toString()
@@ -68,6 +73,7 @@ class LoginActivity : BaseActivity() {
         }
 
         userSystemService.login(username, password, application.getAndroidID(), Platform.Type_Android, userSystemCallback)
+        showProgressBar()
     }
 
     companion object {

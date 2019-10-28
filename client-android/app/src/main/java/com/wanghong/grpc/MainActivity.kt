@@ -20,7 +20,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.wanghong.grpc.usersystem.UserSystemCallback
 import com.wanghong.grpc.usersystem.proto.CheckLoginResponse
@@ -39,6 +39,13 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         mainButtonLogout.setOnClickListener { performLogout() }
+
+        val token = application.getUserPreference().getString(PREF_KEY_TOKEN, "")
+        val username = application.getUserPreference().getString(PREF_KEY_USERNAME, "")
+        if (token == null || token.isEmpty() || username == null || username.isEmpty()) {
+            LoginActivity.start(this)
+            finish()
+        }
     }
 
     override fun onUserSystemServiceConnected() {
@@ -51,15 +58,13 @@ class MainActivity : BaseActivity() {
         val androidID = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
 
         if (token == null || token.isEmpty() || username == null || username.isEmpty()) {
-            Intent(this, LoginActivity::class.java).also {
-                startActivity(it)
-                finish()
-            }
+            LoginActivity.start(this)
+            finish()
         } else {
-            mainTextUsername.text = "Username:$username"
-            mainTextUserID.text = "User ID: $userID"
-            mainTextAndroidID.text = "Android ID: $androidID"
-            mainTextToken.text = "JWT token: $token"
+            mainTextUsername.text = username
+            mainTextUserID.text = userID
+            mainTextAndroidID.text = androidID
+            mainTextToken.text = token
 
             userSystemService.checkLogin(username, token, androidID, Platform.Type_Android, userSystemCallback)
         }
@@ -86,6 +91,7 @@ class MainActivity : BaseActivity() {
 
         override fun onLogout(commonResponse: CommonResponse) {
             super.onLogout(commonResponse)
+            hideProgressBar()
             if (commonResponse.code == ResponseCode.OK) {
                 application.clearUserAuthInfo()
                 LoginActivity.start(this@MainActivity)
@@ -95,9 +101,12 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun getProgressBar(): View? = mainProgressBar
+
     private fun performLogout() {
         manuallyLogout = true
         userSystemService.logout(application.getUserPreference().getString(PREF_KEY_USERNAME, ""), userSystemCallback)
+        showProgressBar()
     }
 
     companion object {

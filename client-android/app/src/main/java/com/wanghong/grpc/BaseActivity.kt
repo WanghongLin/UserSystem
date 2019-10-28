@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.wanghong.grpc.usersystem.UserSystemService
@@ -29,7 +30,7 @@ import com.wanghong.grpc.usersystem.proto.CommonResponse
 /**
  * Created by wanghonglin on 2019-10-26 13:06.
  */
-open class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
     protected lateinit var userSystemService: UserSystemService
     private var userSystemServiceBound = false
@@ -57,6 +58,16 @@ open class BaseActivity : AppCompatActivity() {
             .setCancelable(true)
             .setPositiveButton(R.string.ok) { dialog, _ -> dialog?.dismiss() }
             .show()
+    }
+
+    protected open fun getProgressBar(): View? = null
+
+    protected fun showProgressBar() {
+        getProgressBar()?.visibility = View.VISIBLE
+    }
+
+    protected fun hideProgressBar() {
+        getProgressBar()?.visibility = View.GONE
     }
 
     override fun onStart() {

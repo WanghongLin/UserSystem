@@ -16,12 +16,9 @@
 
 package com.wanghong.grpc
 
-import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.wanghong.grpc.usersystem.UserSystemCallback
 import com.wanghong.grpc.usersystem.proto.Platform
 import com.wanghong.grpc.usersystem.proto.RegisterResponse
@@ -46,6 +43,8 @@ class RegisterActivity : BaseActivity() {
     private val userSystemCallback = object : UserSystemCallback {
         override fun onRegistered(registerResponse: RegisterResponse) {
             super.onRegistered(registerResponse)
+            hideProgressBar()
+
             if (registerResponse.response.code == ResponseCode.OK && registerResponse.token.isNotEmpty()) {
                 application.saveUserAuthInfo(registerResponse.userModel.username, registerResponse.userModel.id, registerResponse.token)
                 MainActivity.start(this@RegisterActivity)
@@ -53,10 +52,10 @@ class RegisterActivity : BaseActivity() {
             } else {
                 showErrorDialog(registerResponse.response)
             }
-
-            registerProgressBar.visibility = View.GONE
         }
     }
+
+    override fun getProgressBar(): View? = registerProgressBar
 
     private fun performRegister() {
         val username = registerEditTextUsername.text.toString()
@@ -72,7 +71,7 @@ class RegisterActivity : BaseActivity() {
             return
         }
 
-        registerProgressBar.visibility = View.VISIBLE
+        showProgressBar()
         userSystemService.register(username, password, application.getAndroidID(), Platform.Type_Android, userSystemCallback)
     }
 }

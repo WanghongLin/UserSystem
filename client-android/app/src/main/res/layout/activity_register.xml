@@ -37,7 +37,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/username"
-            android:minHeight="56dp" />
+            android:maxLines="1"
+            android:minHeight="56dp"
+            android:singleLine="true" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/registerEditTextPassword"
@@ -45,7 +47,9 @@
             android:layout_height="wrap_content"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:minHeight="56dp" />
+            android:maxLines="1"
+            android:minHeight="56dp"
+            android:singleLine="true" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/registerEditTextConfirmPassword"
@@ -53,7 +57,9 @@
             android:layout_height="wrap_content"
             android:hint="@string/confirm_password"
             android:inputType="textPassword"
-            android:minHeight="56dp" />
+            android:maxLines="1"
+            android:minHeight="56dp"
+            android:singleLine="true" />
 
         <Button
             android:id="@+id/registerButtonSingUp"
@@ -74,14 +80,7 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <ProgressBar
+    <include
         android:id="@+id/registerProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        layout="@layout/progress_bar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

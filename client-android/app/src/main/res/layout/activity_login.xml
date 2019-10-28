@@ -34,19 +34,24 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/loginEditTextUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/username"
-            android:minHeight="56dp" />
+            android:maxLines="1"
+            android:minHeight="56dp"
+            android:singleLine="true" />
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/loginEditTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password"
-            android:minHeight="56dp" />
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:minHeight="56dp"
+            android:singleLine="true" />
 
         <Button
             android:id="@+id/loginButton"
@@ -67,5 +72,9 @@
             android:textColor="@color/colorAccent"
             android:textStyle="bold" />
     </LinearLayout>
+
+    <include
+        android:id="@+id/loginProgressBar"
+        layout="@layout/progress_bar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
