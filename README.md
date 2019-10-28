@@ -11,6 +11,7 @@ Just a simple demo application, including the following features
 * client can received logout event if the same user login from a different new device
 * sensitive data is protected by `sslserver`/`sslchannel` only if client connect to server by hostname, fallback to `insecureserver`/`insecurechannel` if client connect to server by IP address which means the system is vulnerable 
 * use mysql and mysqlx api for data persistence
+* user password is stored via simple hash(`sha256`) algorithm, replace it with more security `bcrypt` password encoder
 
 Quick Guide
 ------

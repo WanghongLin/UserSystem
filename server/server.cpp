@@ -86,8 +86,26 @@ void RunServer(bool enableSsl, std::string& dbUrl)
     server->Wait();
 }
 
+static void ShowUsage()
+{
+    std::cout << "Simple user system application\n"
+              << "Usage:\n"
+              << "\tserver [OPTION...]\n\n"
+              << "Help Options:\n"
+              << "\t-h, --help\tShow this help\n\n"
+              << "Application Options:\n"
+              << "\t--enable-ssl\tUse ssl certificate, DO NOT support connect from IP address\n"
+              << "\t--db-url\tDatabase url connect information, e.g mysqlx://root:password@db_host\n"
+              << std::endl;
+    std::exit(EXIT_SUCCESS);
+}
+
 int main(int argc, char* argv[])
 {
+    if (argc == 2 && (std::string(argv[1]) == "-h" || std::string(argv[1]) == "--help")) {
+        ShowUsage();
+    }
+
     // ssl server didn't support connect from IP address
     bool sslSupport = false;
     std::string dbUrl(DEFAULT_DB_URL);
