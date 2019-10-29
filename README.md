@@ -13,13 +13,33 @@ Just a simple demo application, including the following features
 * use mysql and mysqlx api for data persistence
 * user password is stored via simple hash(`sha256`) algorithm, replace it with more security `bcrypt` password encoder
 
-Quick Guide
+Quick Deployment Guide
 ------
 For server deployment, just run
 ```
 docker-compose up
 ```
 The command above will setup two image, one for our usersystem app, and another is mysql db.
+
+Setup development environment and build
+------
+The testing and recommended gRPC version is `v1.23.x`
+##### Setup for macOS 
+```
+$ brew install grpc++ openssl cmake
+$ git clone https://github.com/WanghongLin/UserSystem
+$ cd UserSystem
+$ git submodule update --init
+$ ./build.sh
+```
+
+##### Setup for Linux
+
+Follow the [guide](https://github.com/grpc/grpc/blob/master/BUILDING.md) to build and install gPRC C++ for Linux, then install the requisite `libssl-dev` and `cmake`
+```
+$ apt install libssl-dev cmake
+```
+After done, follow the same step in macOS to build this project.
 
 Server setup
 ------
