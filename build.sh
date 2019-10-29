@@ -11,11 +11,11 @@ _ncpu=2
 if [[ "$OSTYPE" == "linux-gnu" ]];then
     _ncpu=$(nproc)
 elif [[ "$OSTYPE" == "darwin"* ]];then
-    _with_ssl="-DWITH_SSL=`brew --prefix`/Cellar/openssl/1.0.2s .."
+    _with_ssl="-DWITH_SSL=`brew --prefix`/Cellar/openssl/1.0.2s"
     _ncpu=$(sysctl -n hw.ncpu)
 fi
 
-cd ${_project_root}/mysql-connector-cpp && mkdir build
+cd ${_project_root}/mysql-connector-cpp && mkdir -p build
 cd build
 
 cmake -DCMAKE_BUILD_TYPE=Release \
@@ -25,7 +25,7 @@ cmake -DCMAKE_BUILD_TYPE=Release \
 cmake --build . --target install -- -j${_ncpu}
 
 # build our application, server side
-cd ${_project_root} && mkdir cmake-build
+cd ${_project_root} && mkdir -p cmake-build
 cd cmake-build
 
 cmake -DMYSQL_CONNECTOR=${_project_root}/mysql-connector-cpp/build/out ..
