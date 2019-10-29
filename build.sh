@@ -15,11 +15,11 @@ elif [[ "$OSTYPE" == "darwin"* ]];then
     _ncpu=$(sysctl -n hw.ncpu)
 fi
 
-cd ${_project_root}/mysql-connector-cpp
+cd ${_project_root}/mysql-connector-cpp && mkdir build && cd build
 
 cmake -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=`pwd`/out \
-    ${_with_ssl}
+    ${_with_ssl} ..
 
 cmake --build . --target install -- -j${_ncpu}
 
