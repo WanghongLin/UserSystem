@@ -54,9 +54,6 @@ RUN echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8
 
 RUN git clone https://github.com/WanghongLin/UserSystem /var/local/git/UserSystem && \
     cd /var/local/git/UserSystem && \
-    mkdir build && \
-    cd build && \
-    cmake -DMYSQL_CONNECTOR=/usr/local/mysql/connector-c++-8.0 .. && \
-    make server -j$(nproc)
+    bash build.sh
 
-CMD ["/var/local/git/UserSystem/build/server/server"]
+CMD ["/var/local/git/UserSystem/cmake-build/server/server"]

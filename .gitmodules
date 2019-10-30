@@ -1,3 +1,7 @@
 [submodule "mysql-connector-cpp"]
 	path = mysql-connector-cpp
 	url = https://github.com/mysql/mysql-connector-cpp
+[submodule "grpc"]
+	path = grpc
+	url = https://github.com/grpc/grpc
+	branch = v1.23.x

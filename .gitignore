@@ -29,6 +29,7 @@
 *.out
 *.app
 
+**/cmake-build
 **/cmake-build-debug
 **/CMakeCache.txt
 **/cmake_install.cmake
