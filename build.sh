@@ -39,15 +39,13 @@ shift $(($OPTIND-1))
 
 _project_root=$(pwd)
 
-# build mysql connector
-git submodule update --init
-
 _with_ssl=
 _ncpu=2
 
 if [[ "$OSTYPE" == "linux-gnu" ]];then
     _ncpu=$(nproc)
     # linux docker we already have grpc and protobuf installed
+    git -c submodule."grpc".update=none submodule update --init
 elif [[ "$OSTYPE" == "darwin"* ]];then
     _with_ssl="-DWITH_SSL=`brew --prefix openssl`"
     _ncpu=$(sysctl -n hw.ncpu)
@@ -64,6 +62,7 @@ elif [[ "$OSTYPE" == "darwin"* ]];then
     export PATH=${_project_root}/grpc/out/bin:$PATH
 fi
 
+# build mysql connector
 cd ${_project_root}/mysql-connector-cpp && mkdir -p build
 cd build
 
