@@ -40,7 +40,7 @@ shift $(($OPTIND-1))
 _project_root=$(pwd)
 
 _with_ssl=
-_ncpu=2
+_ncpu=8
 
 if [[ "$OSTYPE" == "linux-gnu" ]];then
     _ncpu=$(nproc)
@@ -52,24 +52,30 @@ elif [[ "$OSTYPE" == "darwin"* ]];then
 
     cd ${_project_root}/grpc
     git submodule update --init --recursive
-    LIBTOOL=glibtool LIBTOOLIZE=glibtoolize make prefix=`pwd`/out install -j8
+    _prefix=${_project_root}/grpc_prebuilt
 
-    # build and install protobuf
+    printf "\e[32mBuilding and Installing gRPC to ${_prefix}\e[0m\n"
+    LIBTOOL=glibtool LIBTOOLIZE=glibtoolize make prefix=${_prefix} install -j8 >/dev/null 2>&1
+
+     build and install protobuf
+    printf "\e[32mBuilding and Installing protobuf to ${_prefix}\e[0m\n"
     cd third_party/protobuf
-    ./configure --prefix=`pwd`/../../out
-    make -j8 install
+    ./configure --prefix=${_prefix} --enable-shared --enable-static >/dev/null 2>&1
+    make -j8 install >/dev/null 2>&1
 
-    export PATH=${_project_root}/grpc/out/bin:$PATH
+    export PATH=${_prefix}/bin:$PATH
 fi
 
 # build mysql connector
-cd ${_project_root}/mysql-connector-cpp && mkdir -p build
+_mysql_install_prefix=${_project_root}/mysqlcppconn_prebuilt
+cd ${_project_root}/mysql-connector-cpp && rm -rf build && mkdir -p build
 cd build
 
 cmake -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=`pwd`/out \
+    -DCMAKE_INSTALL_PREFIX=${_mysql_install_prefix} \
     ${_with_ssl} ..
 
+printf "\e[32mBuilding MySQL Connector C++ shared version\e[0m\n"
 cmake --build . --target install -- -j${_ncpu}
 
 # build our application, server side
@@ -85,6 +91,6 @@ else
     cd ${_project_root} && mkdir -p cmake-build
     cd cmake-build
 
-    cmake -DMYSQL_CONNECTOR=${_project_root}/mysql-connector-cpp/build/out ..
+    cmake -DMYSQL_CONNECTOR=${_mysql_install_prefix} ..
     cmake --build . -- -j${_ncpu}
 fi

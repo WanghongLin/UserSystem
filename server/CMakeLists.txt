@@ -5,10 +5,10 @@ set(CMAKE_CXX_STANDARD 11)
 include(../common/common.cmake)
 
 if (NOT DEFINED MYSQL_CONNECTOR)
-    set(MYSQL_CONNECTOR "${CMAKE_SOURCE_DIR}/mysql-connector-cpp/build/out")
+    set(MYSQL_CONNECTOR "${CMAKE_SOURCE_DIR}/mysqlcppconn_prebuilt")
 endif ()
 
-message("Use mysql connector in ${MYSQL_CONNECTOR}")
+message("Use mysql connector from ${MYSQL_CONNECTOR}")
 
 include_directories(${MYSQL_CONNECTOR}/include)
 link_directories(${MYSQL_CONNECTOR}/lib64)

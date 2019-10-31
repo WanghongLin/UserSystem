@@ -4,7 +4,7 @@ file(GLOB COMMON_FILES ${CMAKE_SOURCE_DIR}/common/*.cc)
 
 include(FindPkgConfig)
 if (PKG_CONFIG_FOUND)
-    set(ENV{PKG_CONFIG_PATH} "${CMAKE_SOURCE_DIR}/grpc/out/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
+    set(ENV{PKG_CONFIG_PATH} "${CMAKE_SOURCE_DIR}/grpc_prebuilt/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
     pkg_check_modules(GRPC grpc++)
     if (GRPC_FOUND)
         include_directories(${GRPC_INCLUDE_DIRS})

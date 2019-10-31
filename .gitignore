@@ -60,3 +60,6 @@ bin/*
 .bash/
 bin/bootstrap
 bin/lib-bash
+
+grpc_prebuilt
+mysqlcppconn_prebuilt
