@@ -51,17 +51,20 @@ elif [[ "$OSTYPE" == "darwin"* ]];then
     _ncpu=$(sysctl -n hw.ncpu)
 
     cd ${_project_root}/grpc
-    git submodule update --init --recursive
+    git submodule update --init
     _prefix=${_project_root}/grpc_prebuilt
 
-    printf "\e[32mBuilding and Installing gRPC to ${_prefix}\e[0m\n"
-    LIBTOOL=glibtool LIBTOOLIZE=glibtoolize make prefix=${_prefix} install -j8 >/dev/null 2>&1
-
-     build and install protobuf
-    printf "\e[32mBuilding and Installing protobuf to ${_prefix}\e[0m\n"
+    # build and install protobuf
+    printf "\e[32m------ Building and Installing protobuf to ${_prefix} ------\e[0m\n"
     cd third_party/protobuf
-    ./configure --prefix=${_prefix} --enable-shared --enable-static >/dev/null 2>&1
+    git submodule update --init
+    ./autogen.sh && ./configure --prefix=${_prefix} --enable-shared --enable-static >/dev/null 2>&1
     make -j8 install >/dev/null 2>&1
+
+    # build and install grpc
+    printf "\e[32m------ Building and Installing gRPC to ${_prefix} ------\e[0m\n"
+    cd ${_project_root}/grpc
+    LIBTOOL=glibtool LIBTOOLIZE=glibtoolize make prefix=${_prefix} install -j8 >/dev/null 2>&1
 
     export PATH=${_prefix}/bin:$PATH
 fi
@@ -75,7 +78,7 @@ cmake -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=${_mysql_install_prefix} \
     ${_with_ssl} ..
 
-printf "\e[32mBuilding MySQL Connector C++ shared version\e[0m\n"
+printf "\e[32m ------ Building and Installing MySQL Connector C++ shared version------ \e[0m\n"
 cmake --build . --target install -- -j${_ncpu}
 
 # build our application, server side
