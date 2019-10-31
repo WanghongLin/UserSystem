@@ -43,8 +43,7 @@ cc_binary(
 	includes = ["common", "server"],
 	linkopts = [
 		"-Lmysqlcppconn_prebuilt/lib64 -lmysqlcppconn8",
-		"-Lgrpc_prebuilt/lib -lgrpc++", "-lprotobuf", "-lssl -lcrypto"],
-	linkstatic = True,
+		"-Lgrpc_prebuilt/lib -L/usr/local/lib -lgrpc++", "-lprotobuf", "-lssl -lcrypto"],
 	deps = select({
 	    "@bazel_tools//src/conditions:darwin": [":mysqlcpp", ":grpc_prebuilt", "@local_config_brew//:brew_library"],
 	    "@bazel_tools//src/conditions:linux_x86_64": [":mysqlcpp"],
