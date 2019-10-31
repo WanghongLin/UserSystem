@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
 
     // auto checkResult = user_client.CheckLogin("john", loginResponse.token(), device_id, usersystem::Platform::Type_Desktop);
     // std::cout << "Check result " << checkResult.response().message() << ' ' << checkResult.response().code() << std::endl;
-    user_client.Logout(username);
+    user_client.Logout(username, loginResponse.token());
 
     return EXIT_SUCCESS;
 }

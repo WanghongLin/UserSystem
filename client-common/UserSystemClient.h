@@ -22,7 +22,7 @@ public:
     usersystem::RegisterResponse Register(const std::string& username, const std::string& password, const std::string& device_id, usersystem::Platform platform);
     usersystem::LoginResponse Login(const std::string& username, const std::string& password, const std::string& device_id, usersystem::Platform platform);
     usersystem::CheckLoginResponse CheckLogin(const std::string& username, const std::string& token, const std::string& device_id, usersystem::Platform platform);
-    usersystem::CommonResponse Logout(const std::string& username);
+    usersystem::CommonResponse Logout(const std::string& username, const std::string& token);
 
 private:
     std::unique_ptr<usersystem::UserSystem::Stub> _stub;

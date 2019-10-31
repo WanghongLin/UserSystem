@@ -13,6 +13,7 @@ public  final class LogoutRequest extends
     LogoutRequestOrBuilder {
   private LogoutRequest() {
     username_ = "";
+    token_ = "";
   }
   private int bitField0_;
   public static final int USERNAME_FIELD_NUMBER = 1;
@@ -67,6 +68,60 @@ public  final class LogoutRequest extends
   }
   bitField0_ |= 0x00000001;
     username_ = value.toStringUtf8();
+  }
+
+  public static final int TOKEN_FIELD_NUMBER = 2;
+  private java.lang.String token_;
+  /**
+   * <code>required string token = 2;</code>
+   */
+  @java.lang.Override
+  public boolean hasToken() {
+    return ((bitField0_ & 0x00000002) != 0);
+  }
+  /**
+   * <code>required string token = 2;</code>
+   */
+  @java.lang.Override
+  public java.lang.String getToken() {
+    return token_;
+  }
+  /**
+   * <code>required string token = 2;</code>
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getTokenBytes() {
+    return com.google.protobuf.ByteString.copyFromUtf8(token_);
+  }
+  /**
+   * <code>required string token = 2;</code>
+   */
+  private void setToken(
+      java.lang.String value) {
+    if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+    token_ = value;
+  }
+  /**
+   * <code>required string token = 2;</code>
+   */
+  private void clearToken() {
+    bitField0_ = (bitField0_ & ~0x00000002);
+    token_ = getDefaultInstance().getToken();
+  }
+  /**
+   * <code>required string token = 2;</code>
+   */
+  private void setTokenBytes(
+      com.google.protobuf.ByteString value) {
+    if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+    token_ = value.toStringUtf8();
   }
 
   public static com.wanghong.grpc.usersystem.proto.LogoutRequest parseFrom(
@@ -213,6 +268,55 @@ public  final class LogoutRequest extends
       return this;
     }
 
+    /**
+     * <code>required string token = 2;</code>
+     */
+    @java.lang.Override
+    public boolean hasToken() {
+      return instance.hasToken();
+    }
+    /**
+     * <code>required string token = 2;</code>
+     */
+    @java.lang.Override
+    public java.lang.String getToken() {
+      return instance.getToken();
+    }
+    /**
+     * <code>required string token = 2;</code>
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTokenBytes() {
+      return instance.getTokenBytes();
+    }
+    /**
+     * <code>required string token = 2;</code>
+     */
+    public Builder setToken(
+        java.lang.String value) {
+      copyOnWrite();
+      instance.setToken(value);
+      return this;
+    }
+    /**
+     * <code>required string token = 2;</code>
+     */
+    public Builder clearToken() {
+      copyOnWrite();
+      instance.clearToken();
+      return this;
+    }
+    /**
+     * <code>required string token = 2;</code>
+     */
+    public Builder setTokenBytes(
+        com.google.protobuf.ByteString value) {
+      copyOnWrite();
+      instance.setTokenBytes(value);
+      return this;
+    }
+
     // @@protoc_insertion_point(builder_scope:usersystem.LogoutRequest)
   }
   private byte memoizedIsInitialized = 2;
@@ -232,9 +336,11 @@ public  final class LogoutRequest extends
           java.lang.Object[] objects = new java.lang.Object[] {
             "bitField0_",
             "username_",
+            "token_",
           };
           java.lang.String info =
-              "\u0001\u0001\u0000\u0001\u0001\u0001\u0001\u0000\u0000\u0001\u0001\u0508\u0000";
+              "\u0001\u0002\u0000\u0001\u0001\u0002\u0002\u0000\u0000\u0002\u0001\u0508\u0000\u0002" +
+              "\u0508\u0001";
           return newMessageInfo(DEFAULT_INSTANCE, info, objects);
       }
       // fall through

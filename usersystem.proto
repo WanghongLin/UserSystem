@@ -117,4 +117,5 @@ message CheckLoginResponse {
 
 message LogoutRequest {
     required string username = 1;
+    required string token = 2;
 }

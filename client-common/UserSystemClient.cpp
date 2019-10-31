@@ -88,9 +88,10 @@ UserSystemClient::CheckLogin(const std::string& username, const std::string& tok
     return response;
 }
 
-usersystem::CommonResponse UserSystemClient::Logout(const std::string& username) {
+usersystem::CommonResponse UserSystemClient::Logout(const std::string& username, const std::string& token) {
     usersystem::LogoutRequest request;
     request.set_username(username);
+    request.set_token(token);
 
     grpc::ClientContext context;
     usersystem::CommonResponse response;

@@ -10,10 +10,11 @@
 constexpr auto TOKEN_VALID_DURATION = 180 * 24 * 60 * 60;
 
 template<typename REQUEST>
-usersystem::UserLoginHistoryModel CreateLoginHistoryModel(const REQUEST* request)
+usersystem::UserLoginHistoryModel CreateLoginHistoryModel(const std::string& subject, const REQUEST* request)
 {
     auto token = jwt::create()
-            .set_issuer("auth0")
+            .set_issuer(request->username())
+            .set_subject(subject)
             .set_issued_at(std::chrono::system_clock::now())
             .set_expires_at(std::chrono::system_clock::now() + std::chrono::seconds{TOKEN_VALID_DURATION})
             .sign(jwt::algorithm::hs256{"secret"});
@@ -61,7 +62,7 @@ grpc::Status UserSystemImpl::Register(::grpc::ServerContext *context,
 
     // also perform login for new create user
     // the client no need to request again just for login
-    auto loginHistoryModel = CreateLoginHistoryModel(request);
+    auto loginHistoryModel = CreateLoginHistoryModel(context->peer(), request);
     _dbConnector.CreateLoginHistory(loginHistoryModel);
 
     response->mutable_response()->set_code(usersystem::ResponseCode::OK);
@@ -103,7 +104,7 @@ UserSystemImpl::Login(::grpc::ServerContext *context, const usersystem::LoginReq
 //            .set_expires_at(std::chrono::system_clock::now() + std::chrono::seconds{TOKEN_VALID_DURATION})
 //            .sign(jwt::algorithm::hs256{"secret"});
 
-    usersystem::UserLoginHistoryModel historyModel = CreateLoginHistoryModel(request);
+    usersystem::UserLoginHistoryModel historyModel = CreateLoginHistoryModel(context->peer(), request);
 
 //    historyModel.set_token(token);
 //    historyModel.set_username(request->username());
@@ -179,7 +180,7 @@ grpc::Status UserSystemImpl::Logout(::grpc::ServerContext *context, const ::user
 
     MySQLDbConnector dbConnector(_dbUrl);
     auto result = dbConnector.FetchLoginHistory(request->username());
-    if (result.username() == request->username()) {
+    if (result.username() == request->username() && result.token() == request->token()) {
         result.set_is_valid(false);
         dbConnector.UpdateLoginHistory(result);
 

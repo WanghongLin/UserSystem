@@ -78,9 +78,9 @@ class UserSystemService : Service() {
         }
     }
 
-    fun logout(username: String, userSystemCallback: UserSystemCallback) {
+    fun logout(username: String, token: String, userSystemCallback: UserSystemCallback) {
         Handler(serviceHandlerThread.looper).post {
-            val commonResponse = userSystemNative.logout(username)
+            val commonResponse = userSystemNative.logout(username, token)
             Handler(Looper.getMainLooper()).post {
                 userSystemCallback.onLogout(commonResponse)
             }

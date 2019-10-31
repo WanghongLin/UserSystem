@@ -105,7 +105,8 @@ class MainActivity : BaseActivity() {
 
     private fun performLogout() {
         manuallyLogout = true
-        userSystemService.logout(application.getUserPreference().getString(PREF_KEY_USERNAME, ""), userSystemCallback)
+        userSystemService.logout(application.getUserPreference().getString(PREF_KEY_USERNAME, ""),
+            application.getUserPreference().getString(PREF_KEY_TOKEN, ""), userSystemCallback)
         showProgressBar()
     }
 

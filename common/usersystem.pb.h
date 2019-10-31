@@ -1904,14 +1904,31 @@ class LogoutRequest :
   std::string* release_username();
   void set_allocated_username(std::string* username);
 
+  // required string token = 2;
+  bool has_token() const;
+  void clear_token();
+  static const int kTokenFieldNumber = 2;
+  const std::string& token() const;
+  void set_token(const std::string& value);
+  void set_token(std::string&& value);
+  void set_token(const char* value);
+  void set_token(const char* value, size_t size);
+  std::string* mutable_token();
+  std::string* release_token();
+  void set_allocated_token(std::string* token);
+
   // @@protoc_insertion_point(class_scope:usersystem.LogoutRequest)
  private:
   class HasBitSetters;
+
+  // helper for ByteSizeLong()
+  size_t RequiredFieldsByteSizeFallback() const;
 
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArenaLite _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr username_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr token_;
   friend struct ::TableStruct_usersystem_2eproto;
 };
 // ===================================================================
@@ -3983,6 +4000,64 @@ inline void LogoutRequest::set_allocated_username(std::string* username) {
   }
   username_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), username);
   // @@protoc_insertion_point(field_set_allocated:usersystem.LogoutRequest.username)
+}
+
+// required string token = 2;
+inline bool LogoutRequest::has_token() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void LogoutRequest::clear_token() {
+  token_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline const std::string& LogoutRequest::token() const {
+  // @@protoc_insertion_point(field_get:usersystem.LogoutRequest.token)
+  return token_.GetNoArena();
+}
+inline void LogoutRequest::set_token(const std::string& value) {
+  _has_bits_[0] |= 0x00000002u;
+  token_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:usersystem.LogoutRequest.token)
+}
+inline void LogoutRequest::set_token(std::string&& value) {
+  _has_bits_[0] |= 0x00000002u;
+  token_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:usersystem.LogoutRequest.token)
+}
+inline void LogoutRequest::set_token(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _has_bits_[0] |= 0x00000002u;
+  token_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:usersystem.LogoutRequest.token)
+}
+inline void LogoutRequest::set_token(const char* value, size_t size) {
+  _has_bits_[0] |= 0x00000002u;
+  token_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:usersystem.LogoutRequest.token)
+}
+inline std::string* LogoutRequest::mutable_token() {
+  _has_bits_[0] |= 0x00000002u;
+  // @@protoc_insertion_point(field_mutable:usersystem.LogoutRequest.token)
+  return token_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* LogoutRequest::release_token() {
+  // @@protoc_insertion_point(field_release:usersystem.LogoutRequest.token)
+  if (!has_token()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000002u;
+  return token_.ReleaseNonDefaultNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void LogoutRequest::set_allocated_token(std::string* token) {
+  if (token != nullptr) {
+    _has_bits_[0] |= 0x00000002u;
+  } else {
+    _has_bits_[0] &= ~0x00000002u;
+  }
+  token_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), token);
+  // @@protoc_insertion_point(field_set_allocated:usersystem.LogoutRequest.token)
 }
 
 #ifdef __GNUC__

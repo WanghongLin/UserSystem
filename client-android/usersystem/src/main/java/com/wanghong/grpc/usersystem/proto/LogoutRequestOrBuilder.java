@@ -20,4 +20,18 @@ public interface LogoutRequestOrBuilder extends
    */
   com.google.protobuf.ByteString
       getUsernameBytes();
+
+  /**
+   * <code>required string token = 2;</code>
+   */
+  boolean hasToken();
+  /**
+   * <code>required string token = 2;</code>
+   */
+  java.lang.String getToken();
+  /**
+   * <code>required string token = 2;</code>
+   */
+  com.google.protobuf.ByteString
+      getTokenBytes();
 }

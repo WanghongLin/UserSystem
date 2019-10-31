@@ -68,7 +68,7 @@ class UserSystemNative private constructor() {
     private external fun naRegister(username: String, password: String, deviceId: String, platform: Int): ByteArray
     private external fun naLogin(username: String, password: String, deviceId: String, platform: Int): ByteArray
     private external fun naCheckLogin(username: String, token: String, deviceId: String, platform: Int): ByteArray
-    private external fun naLogout(username: String): ByteArray
+    private external fun naLogout(username: String, token: String): ByteArray
 
     /**
      * Call gRPC to register
@@ -98,5 +98,5 @@ class UserSystemNative private constructor() {
      */
     fun checkLogin(username: String, token: String, deviceId: String, platform: Int) = CheckLoginResponse.parseFrom(naCheckLogin(username, token, deviceId, platform))
 
-    fun logout(username: String) = CommonResponse.parseFrom(naLogout(username))
+    fun logout(username: String, token: String) = CommonResponse.parseFrom(naLogout(username, token))
 }

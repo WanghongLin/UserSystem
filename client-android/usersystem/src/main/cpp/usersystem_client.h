@@ -42,10 +42,10 @@ JNIEXPORT jbyteArray JNICALL Java_com_wanghong_grpc_usersystem_UserSystemNative_
 /*
  * Class:     com_wanghong_grpc_usersystem_UserSystemNative
  * Method:    naLogout
- * Signature: (Ljava/lang/String;)[B
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)[B
  */
 JNIEXPORT jbyteArray JNICALL Java_com_wanghong_grpc_usersystem_UserSystemNative_naLogout
-  (JNIEnv *, jobject, jstring);
+  (JNIEnv *, jobject, jstring, jstring);
 
 #ifdef __cplusplus
 }

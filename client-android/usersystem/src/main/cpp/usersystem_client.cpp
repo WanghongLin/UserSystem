@@ -98,15 +98,18 @@ Java_com_wanghong_grpc_usersystem_UserSystemNative_naCheckLogin(JNIEnv* env, job
     return ToJByteArray(env, response);
 }
 
-extern "C" jbyteArray Java_com_wanghong_grpc_usersystem_UserSystemNative_naLogout(JNIEnv* env, jobject callingObj, jstring username) {
+extern "C" jbyteArray Java_com_wanghong_grpc_usersystem_UserSystemNative_naLogout(JNIEnv* env, jobject callingObj,
+                                                                                  jstring username, jstring token) {
     usersystem::CommonResponse response;
 
     ALOGD(TAG, "%s", __PRETTY_FUNCTION__);
     auto client = UserSystemClientProxy::getInstance()->getClient(env, callingObj);
     if (client) {
         auto name = env->GetStringUTFChars(username, 0);
-        response = client->Logout(name);
+        auto tk = env->GetStringUTFChars(token, 0);
+        response = client->Logout(name, tk);
         env->ReleaseStringUTFChars(username, name);
+        env->ReleaseStringUTFChars(token, tk);
     } else {
         response.set_code(usersystem::ResponseCode::ERROR_ANDROID_JNI_CALL);
         response.set_message("JNI Call Error: no client found");
