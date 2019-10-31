@@ -100,6 +100,7 @@ TODO
 * add `armeabi-v7a` to support old non-64bits device
 * use bcrypt password hashing algorithm to hash user password instead use the simple SHA256
 * bazel build support for Android
+* iOS and Desktop client
 
 Reference
 ------
