@@ -26,6 +26,21 @@ $ docker-compose up
 ```
 The command above will setup two image, one for our usersystem app, and another is mysql db. Docker image for gRPC is a modification version of official [gRPC Dockerfile](https://github.com/grpc/grpc-docker-library/blob/master/1.21.0/cxx/Dockerfile) with `cmake` and `bazel` support.
 
+##### Deploy on low end machine
+If your deploy machine have a small memory footprint with limited cpu cores, it usually happen on cloud service virtual machine, you will see this error
+
+>[ERROR] [MY-012681] [InnoDB] mmap(137363456 bytes) failed; errno 12<br/>[ERROR] [MY-012956] [InnoDB] Cannot allocate memory for the buffer pool
+
+Consider add command option `--innodb-buffer-pool-size=16M` to `docker-compose.yml` to use a small memory pool. Use the command `mysqld --verbose --help` to look up more options if you need more customizations on docker `mysqld`.
+
+Also, consider use a prebuilt docker image from your desktop environment by `docker image save` and `scp` into your cloud service virtual machine, then use the prebuilt image by `docker image load` to reduce image build time.
+
+Finally, provide a custom http timeout to run docker
+
+```bash
+$ sudo COMPOSE_HTTP_TIMEOUT=200 docker-compose up
+```
+
 Setup development environment and build
 ------
 The testing and recommended gRPC version is `v1.23.x` and protoc version `3.8.0`
@@ -107,6 +122,9 @@ Reference
 * [Generating a self-signed certificate using OpenSSL](https://www.ibm.com/support/knowledgecenter/en/SSMNED_5.0.0/com.ibm.apic.cmc.doc/task_apionprem_gernerate_self_signed_openSSL.html)
 * [How to create a self-signed certificate with OpenSSL](https://stackoverflow.com/questions/10175812/how-to-create-a-self-signed-certificate-with-openssl)
 * [gPRC Docker Library](https://github.com/grpc/grpc-docker-library)
+* [low-memory-mysql](https://github.com/alexanderkoller/low-memory-mysql)
+* [COMPOSE_HTTP_TIMEOUT](https://stackoverflow.com/questions/36488209/how-to-override-the-default-value-of-compose-http-timeout-with-docker-compose-co)
+* [MySQL docker compose options](https://stackoverflow.com/questions/46004648/how-to-setup-mysql-with-utf-8-using-docker-compose)
 
 ##### MySQL Reference
 * [MySQL Connector C++ in Github](https://github.com/mysql/mysql-connector-cpp)
