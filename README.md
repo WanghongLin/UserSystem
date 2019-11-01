@@ -8,9 +8,9 @@ Just a simple demo application, including the following features
 * User register
 * User login
 * User logout
-* Client can received logout event if the same user login from a different new device
+* Client can received logout event if the same user login from a different new device, disable duplicated login
 * Sensitive data is protected by `sslserver`/`sslchannel` only if client connect to server by hostname, fallback to `insecureserver`/`insecurechannel` if client connect to server by IP address which means the system is vulnerable 
-* Use mysql and mysqlx api for data persistence
+* Use mysql and `mysqlx` protocol api for data persistence
 * Currently, user password is stored via simple hash(`sha256`) algorithm, replace it with more security `bcrypt` password encoder
 
 The following picture illustrate the design of this system from a developer perspective.
@@ -25,6 +25,18 @@ $ cd UserSystem
 $ docker-compose up
 ```
 The command above will setup two image, one for our usersystem app, and another is mysql db. Docker image for gRPC is a modification version of official [gRPC Dockerfile](https://github.com/grpc/grpc-docker-library/blob/master/1.21.0/cxx/Dockerfile) with `cmake` and `bazel` support.
+
+After docker containers up, you can connect mysql db server from host mysql client with the following command
+
+```bash
+$ mysql -h localhost --protocol=TCP -P 33306 -uroot -pexample
+```
+Add the following volumes map to save mysql database to host after `docker-compose down`
+
+```yaml
+volumes:
+    - /my/own/datadir/in/host:/var/lib/mysql
+```
 
 ##### Deploy on low end machine
 If your deploy machine have a small memory footprint with limited cpu cores, it usually happen on cloud service virtual machine, you will see this error
