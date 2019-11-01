@@ -38,7 +38,7 @@ Also, consider use a prebuilt docker image from your desktop environment by `doc
 Finally, provide a custom http timeout to run docker
 
 ```bash
-$ sudo COMPOSE_HTTP_TIMEOUT=200 docker-compose up
+$ sudo COMPOSE_HTTP_TIMEOUT=200 docker-compose up -d
 ```
 
 Setup development environment and build
@@ -125,6 +125,7 @@ Reference
 * [low-memory-mysql](https://github.com/alexanderkoller/low-memory-mysql)
 * [COMPOSE_HTTP_TIMEOUT](https://stackoverflow.com/questions/36488209/how-to-override-the-default-value-of-compose-http-timeout-with-docker-compose-co)
 * [MySQL docker compose options](https://stackoverflow.com/questions/46004648/how-to-setup-mysql-with-utf-8-using-docker-compose)
+* [MySQL docker hub](https://hub.docker.com/_/mysql)
 
 ##### MySQL Reference
 * [MySQL Connector C++ in Github](https://github.com/mysql/mysql-connector-cpp)
