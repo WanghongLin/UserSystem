@@ -38,7 +38,7 @@ class UserSystemService : Service() {
     private val userSystemBinder = UserSystemBinder()
 
     init {
-        connect("192.168.43.27", 50051, "");
+        connect("129.226.119.227", 50051, "");
     }
 
     override fun onBind(intent: Intent): IBinder = userSystemBinder
