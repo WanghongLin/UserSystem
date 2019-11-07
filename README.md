@@ -138,6 +138,7 @@ Reference
 * [COMPOSE_HTTP_TIMEOUT](https://stackoverflow.com/questions/36488209/how-to-override-the-default-value-of-compose-http-timeout-with-docker-compose-co)
 * [MySQL docker compose options](https://stackoverflow.com/questions/46004648/how-to-setup-mysql-with-utf-8-using-docker-compose)
 * [MySQL docker hub](https://hub.docker.com/_/mysql)
+* [jwt-cpp](https://github.com/Thalhammer/jwt-cpp)
 
 ##### MySQL Reference
 * [MySQL Connector C++ in Github](https://github.com/mysql/mysql-connector-cpp)
