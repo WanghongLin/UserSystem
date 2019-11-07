@@ -13,7 +13,7 @@ template<typename REQUEST>
 usersystem::UserLoginHistoryModel CreateLoginHistoryModel(const std::string& subject, const REQUEST* request)
 {
     auto token = jwt::create()
-            .set_issuer(request->username())
+            .set_issuer("auth0")
             .set_subject(subject)
             .set_issued_at(std::chrono::system_clock::now())
             .set_expires_at(std::chrono::system_clock::now() + std::chrono::seconds{TOKEN_VALID_DURATION})
@@ -180,6 +180,18 @@ grpc::Status UserSystemImpl::Logout(::grpc::ServerContext *context, const ::user
 
     MySQLDbConnector dbConnector(_dbUrl);
     auto result = dbConnector.FetchLoginHistory(request->username());
+    // FIXME: use jwt to verify token
+    auto verifier = jwt::verify()
+            .allow_algorithm(jwt::algorithm::hs256 { "secret" })
+            .with_issuer("auth0");
+    auto decoded_token = jwt::decode(request->token());
+    try {
+        verifier.verify(decoded_token);
+        std::cout << __FUNCTION__ << " verify ok" << std::endl;
+    } catch (jwt::token_verification_exception& e) {
+        std::cerr << __FUNCTION__ << " verify failed " << e.what() << std::endl;
+    }
+
     if (result.username() == request->username() && result.token() == request->token()) {
         result.set_is_valid(false);
         dbConnector.UpdateLoginHistory(result);
